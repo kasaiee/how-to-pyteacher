@@ -1,0 +1,22 @@
+{% load thumbnail %}
+
+
+<div class="col s12 m4">
+  <div class="card">
+    <div class="card-image">
+      <a href="{% url 'app-base:course-detail' id=course.id %}">
+        {% thumbnail course.image "300x220" crop="center" as im %}
+          <img src="{{ im.url }}" class="responsive-img" width="{{ im.width }}" height="{{ im.height }}">
+        {% endthumbnail %}
+        <span class="card-title">{{ course.title }}</span>
+      </a>
+    </div>
+    <div class="card-content">
+      <p>{{ course.description|truncatewords:11 }}</p>
+    </div>
+    <div class="card-action">
+      <a href="{% url 'app-base:course-detail' id=course.id %}">جزئیات دوره</a>
+      <a href="#">شرکت در دوره</a>
+    </div>
+  </div>
+</div>
