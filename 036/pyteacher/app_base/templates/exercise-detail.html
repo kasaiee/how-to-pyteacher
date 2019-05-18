@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+  <link rel="stylesheet" href="{% static 'codemirror-5.43.0/lib/codemirror.css' %}">
+  <link rel="stylesheet" href="{% static 'codemirror-5.43.0/addon/fold/foldgutter.css' %}">
+  <link rel="stylesheet" href="{% static 'codemirror-5.43.0/addon/dialog/dialog.css' %}">
+  <link rel="stylesheet" href="{% static 'codemirror-5.43.0/theme/monokai.css' %}">
+  <style type="text/css">
+    article.code * {
+      direction: ltr
+    }
+  </style>
+{% endblock css %}
+
+{% block content %}
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="col m12">
+          <h2>{{ exercise.title }}</h2>
+          <div class="card-panel">
+            <p>{{ exercise.description }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col m6 s12">
+          <div id="1549693971206846"><script type="text/JavaScript" src="https://www.aparat.com/embed/8os9x?data[rnddiv]=1549693971206846&data[responsive]=yes"></script></div>
+        </div>
+        <div class="col m6 s12">
+          <div class="col m6 s12 center">
+            <div class="card-panel blue white-text">
+              <span class="attachment-files valign-wrapper">text.txt</span>
+            </div>
+          </div>
+          <div class="col m6 s12 center">
+            <div class="card-panel orange white-text">
+              <span class="attachment-files valign-wrapper">text.txt</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      {% for chat in exercise.chats.all %}
+        {% if chat.is_student %}
+          <div class="row">
+            <div class="col s11">
+              <div class="card-panel light-blue lighten-5">
+                <article class="code code{{ forloop.counter }}"></article>
+                <p>{{ chat.message }}</p>
+                <hr>
+                <div>{{ chat.jd_create_datetime }}<i id="msg-{{ chat.id }}" data-msg-num="{{ chat.id }}" data-seen="{{ chat.seen }}" class="material-icons right light-blue-text">{% if chat.seen %}done_all{% else %}check{% endif %}</i></div>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <div class="row">
+            <div class="col s11 offset-s1">
+              <div class="card-panel lime lighten-4">
+                <article class="code code{{ forloop.counter }}"></article>
+                <p>{{ chat.message }}</p>
+                <hr>
+                <div>{{ chat.jd_create_datetime }}<i id="msg-{{ chat.id }}" data-msg-num="{{ chat.id }}" data-seen="{{ chat.seen }}" class="material-icons right green-text text-lighten-2">{% if chat.seen %}done_all{% else %}check{% endif %}</i></div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+      <div class="row">
+        <div class="col s12">
+          <article class="code code-draft"></article>
+        </div>
+      </div>
+
+      <div id="me">ME!</div>
+
+      <div class="row">
+        <div class="input-field comment-input-field col s12">
+          <textarea id="textarea1" class="materialize-textarea"></textarea>
+          <label for="textarea1">توضیحات لازم در باره حل این تمرین را در اینجا بنویسید ...</label>
+          <button type="submit" class="btn">ارسال</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+{% endblock content %}
+
+  {% block js %}
+    {{ block.super }}
+    <!-- codemirror scripts -->
+    <script src="{% static 'codemirror-5.43.0/lib/codemirror.js' %}"></script>
+    <script src="{% static 'codemirror-5.43.0/addon/search/searchcursor.js' %}"></script>
+    <script src="{% static 'codemirror-5.43.0/addon/search/search.js' %}"></script>
+    <script src="{% static 'codemirror-5.43.0/addon/dialog/dialog.js' %}"></script>
+    <script src="{% static 'codemirror-5.43.0/addon/edit/matchbrackets.js' %}"></script>
+    <script src="{% static 'codemirror-5.43.0/addon/edit/closebrackets.js' %}"></script>
+    <script src="{% static 'codemirror-5.43.0/addon/comment/comment.js' %}"></script>
+    <script src="{% static 'codemirror-5.43.0/addon/wrap/hardwrap.js' %}"></script>
+    <script src="{% static 'codemirror-5.43.0/addon/fold/foldcode.js' %}"></script>
+    <script src="{% static 'codemirror-5.43.0/addon/fold/brace-fold.js' %}"></script>
+    <script src="{% static 'codemirror-5.43.0/mode/javascript/javascript.js' %}"></script>
+    <script src="{% static 'codemirror-5.43.0/keymap/sublime.js' %}"></script>
+    <script src="https://codemirror.net/mode/python/python.js"></script>
+  <script>
+    $(document).ready(function(){
+      $(window).scroll(function() {
+        $.each($('[id^="msg-"]'), function(){
+          var top_of_element = $(this).offset().top;
+          var bottom_of_element = $(this).offset().top + $(this).outerHeight();
+          var bottom_of_screen = $(window).scrollTop() + $(window).innerHeight();
+          var top_of_screen = $(window).scrollTop();
+
+          if ((bottom_of_screen > top_of_element) && (top_of_screen < bottom_of_element)){
+            if ($(this).data('seen') === 'False') {
+                msg_elem = $(this);
+                $.get(
+                  "{% url 'app-base:change-seen-status' %}",
+                  {'msg_id': $(this).data('msg-num')},
+                  function(data, status){
+                    console.log(data, status)
+                    if (status === 'success') {
+                      setTimeout(function() {
+                        msg_elem.addClass('animated heartBeat');
+                        msg_elem.text('done_all');
+                      }, 2000);
+
+                    }
+                });
+              $(this).data('seen', 'True');
+            }
+          }
+        });
+      })
+    });
+
+  {% for chat in exercise.chats.all %}
+    var editor = CodeMirror($("article.code{{ forloop.counter }}")[0], {
+      readOnly: true,
+      value: `{{ chat.code|safe }}`,
+      lineNumbers: true,
+      mode: {
+        name: "python",
+        version: 3,
+        singleLineStringErrors: false
+      },
+      keyMap: "sublime",
+      autoCloseBrackets: true,
+      matchBrackets: true,
+      showCursorWhenSelecting: true,
+      theme: "monokai",
+      tabSize: 4
+    });
+  {% endfor %}
+
+    var editor = CodeMirror($("article.code-draft")[0], {
+      value: `def f():
+    return`,
+      lineNumbers: true,
+      mode: {
+        name: "python",
+        version: 3,
+        singleLineStringErrors: false
+      },
+      keyMap: "sublime",
+      autoCloseBrackets: true,
+      matchBrackets: true,
+      showCursorWhenSelecting: true,
+      theme: "monokai",
+      tabSize: 4
+    });
+  </script>
+  <!-- codemirror scripts -->
+{% endblock js %}

@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% load social_tags %}
+
+ 
+{% block breadcrumb %}
+  <nav class="breadcrumb-nav">
+    <div class="nav-wrapper teal">
+      <div class="col valign-wrapper">
+        <a href="/" class="breadcrumb">خانه</a>
+        <a href="{{ session.course.get_absolute_url }}" class="breadcrumb">{{ session.course.title }}</a>
+        <a href="{{ session.get_absolute_url }}">{{ session.title }}</a>
+      </div>
+    </div>
+  </nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+  
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="col m2 action-icons hide-on-small-only">
+          <i class="material-icons left bookmark {% if session|is_booked:request.user %}orange-text{% else %}black-text{% endif %}" data-id="{{ session.id }}" data-type="CourseSession" style="margin-top: 40px">{% if session|is_booked:request.user %}bookmark{% else %}bookmark_border{% endif %}</i>
+          <i class="material-icons left share" style="margin-top: 40px">share</i>
+          <i class="material-icons left like {% if session|is_liked:request.user %}red-text{% else %}black-text{% endif %}" data-id="{{ session.id }}" data-type="CourseSession" style="margin-top: 40px">{% if session|is_liked:request.user %}favorite{% else %}favorite_border{% endif %}</i>
+        </div>
+        <div class="col m10 s12">
+          <h2>{{ session.course.title }} - {{ session.title }}</h2>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="valign-wrapper">
+          <div class="col m1 hide-on-small-only">
+            <a class="btn tooltipped" data-position="top" data-tooltip="قسمت بعدی" href="#!">
+              <i class="material-icons">navigate_next</i>
+            </a>
+          </div>
+          <div class="col m10 s12">
+            <div id="1549693971206846"><script type="text/JavaScript" src="https://www.aparat.com/embed/8os9x?data[rnddiv]=1549693971206846&data[responsive]=yes"></script></div>
+          </div>
+          <div class="col m1 hide-on-small-only">
+            <a class="btn tooltipped" data-position="top" data-tooltip="قسمت قبلی" href="#!">
+              <i class="material-icons">navigate_before</i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row hide-on-med-and-up">
+        <div class="fixed-action-btn">
+          <a class="btn-floating btn-large blue">
+            <i class="large material-icons">menu</i>
+          </a>
+          <ul>
+            <li><a class="btn-floating orange"><i class="material-icons">comment</i></a></li>
+            <li>
+              <a class="btn-floating btn tooltipped" data-position="top" data-tooltip="قسمت قبلی" href="#!">
+                <i class="material-icons">navigate_before</i>
+              </a>
+            </li>
+            <li>
+              <a class="btn-floating btn tooltipped" data-position="top" data-tooltip="قسمت بعدی" href="#!">
+                <i class="material-icons">navigate_next</i>
+              </a>
+            </li>
+            <li>
+              <a class="btn-floating btn white" href="#!">
+                <i class="material-icons left bookmark orange-text text-darken-2">bookmark_border</i>
+              </a>
+            </li>
+            <li>
+              <a class="btn-floating btn white" href="#!">
+                <i class="material-icons left like pink-text text-darken-1">favorite_border</i>
+              </a>
+            </li>
+            <li>
+              <a class="btn-floating btn white" href="#!">
+                <i class="material-icons left share blue-text">share</i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col m12">
+          <h2>توضیحات این قسمت</h2>
+          <div class="card-panel">
+            <p>{{ session.description }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>فایل های مرتبط با این قسمت</h2>
+        {% for attachment in session.attachment_files.all %}
+        <div class="col m4 s12 center">
+          <a href="{{ attachment.file.url }}">
+            <div class="card-panel {{ attachment.color }} white-text">
+              <span class="attachment-files valign-wrapper ltr file-title">{{ attachment.title|truncatechars:43 }}</span>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <h3><span class="solve-exercises">حل تمرین های این قسمت</span></h3>
+          {% for ex in session.coursesessionexercise_set.all %}
+              <div class="card-panel">
+                <div class="">
+                  <a href="{{ ex.get_absolute_url }}">
+                    <i class="material-icons left">code</i> {{ session }} - {{ ex }}
+                  </a>
+                </div>
+              </div>            
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <h2>اطلاعات آماری این قسمت</h2>
+          <div class="card-panel">
+            لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  
+    <div class="section">
+      <div class="row">
+        <h2>نظرات</h2>
+        <div class="col s12">
+          <div class="card-panel thin-card">
+            <div class="row">
+              <div class="valign-wrapper">
+                <div class="col m2 hide-on-small-only center">
+                  <img class="responsive-img avatar-in-comment" src="https://demos.creative-tim.com/rotating-css-card/images/rotating_card_profile2.png">
+                  <div style="font-family: vazir-thin; font-size:12px">user4345</div>
+                </div>
+                <div class="col m10 s12">
+                  <span class="comment-action">
+                    <a class="left grey-text text-lighten-1 tooltipped" data-position="top" data-tooltip="مخالفم" href="#!"><i class="material-icons">thumb_down</i></a>
+                    <a class="left grey-text text-lighten-1 tooltipped" data-position="top" data-tooltip="موافقم" href="#!"><i class="material-icons">thumb_up</i></a>
+                    <a class="left grey-text text-lighten-1 tooltipped modal-trigger" data-position="top" data-tooltip="پاسخ به این نظر" href="#comment-modal"><i class="material-icons">reply</i></a>
+                  </span>
+                  <div class="hide-on-med-and-up">
+                    نظر از
+                    <b>
+                      <span style="font-family: vazir-thin; font-size:12px">user4345</span>
+                    </b>
+                  </div>
+                  <p>با سپاس از شما که این فیلم را مشاهد میکنید  سپاساین فیلم را مشاهد میکنید  سپاساین فیلم را مشاهد میکنید  سپاساین فیلم را مشاهد میکنید  سپاساین فیلم را مشاهد میکنید  سپاس از شما که این فیلم را مشاهد میکنید  سپاس از شما که این فیلم را مشاهد میکنید  سپاس از شما که این فیلم را مشاهد میکنید </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s11">
+          <div class="card-panel thin-card">
+            <div class="row">
+              <div class="valign-wrapper">
+                <div class="col m2 hide-on-small-only center">
+                  <img class="responsive-img avatar-in-comment" src="https://demos.creative-tim.com/rotating-css-card/images/rotating_card_profile2.png">
+                  <div style="font-family: vazir-thin; font-size:12px">user4345</div>
+                </div>
+                <div class="col m10 s12">
+                  <span class="comment-action">
+                    <a class="left grey-text text-lighten-1 tooltipped" data-position="top" data-tooltip="مخالفم" href="#!"><i class="material-icons">thumb_down</i></a>
+                    <a class="left grey-text text-lighten-1 tooltipped" data-position="top" data-tooltip="موافقم" href="#!"><i class="material-icons">thumb_up</i></a>
+                  </span>
+                  <div class="hide-on-med-and-up">
+                    نظر از
+                    <b>
+                      <span style="font-family: vazir-thin; font-size:12px">user4345</span>
+                    </b>
+                  </div>
+                  <p>با سپاس از شما که این فیلم را مشاهد میکنید  سپاساین فیلم را مشاهد میکنید  سپاساین فیلم را مشاهد میکنید  سپاساین فیلم را مشاهد میکنید  سپاساین فیلم را مشاهد میکنید  سپاس از شما که این فیلم را مشاهد میکنید  سپاس از شما که این فیلم را مشاهد میکنید  سپاس از شما که این فیلم را مشاهد میکنید </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <a class="waves-effect waves-light btn modal-trigger" href="#comment-modal">نظر دهید!</a>
+
+        <!-- comment modal -->
+        <div id="comment-modal" class="modal">
+          <div class="modal-content">
+            <h4>نظر دهید!</h4>
+            <div class="row">
+              <div class="input-field comment-input-field col s12">
+                <textarea id="comment-val" class="materialize-textarea"></textarea>
+                <label for="comment-val">نظر خود را اینجا بنویسید...</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a id="submit-comment" href="#!" data-id="{{ session.id }}" data-type="CourseSession" class="modal-close waves-effect waves-green btn-flat">ثبت</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+ 
+
+{% block js %}
+  {{ block.super }}
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.tooltipped').tooltip();
+      $('.modal').modal();
+      $('.fixed-action-btn').floatingActionButton();
+
+
+      $('#submit-comment').on('click', function(){
+        comment = $('#comment-val').val()
+        $.post({
+          url: '{% url "app-api:comment" %}',
+          headers: {'X-CSRFToken': '{{ csrf_token }}'},
+          data: {
+            'id': $(this).data('id'),
+            'type': $(this).data('type'),
+            'value': comment,
+          },
+          success: function (data) {
+            if (data['warning']) {
+              M.toast({html: '<i class="material-icons yellow-text">warning</i> &nbsp;' + data['warning']});
+            } else {
+              if (data['message']) {
+                M.toast({html: '<i class="material-icons green-text">check</i> &nbsp;' + data['message']});
+              } else {
+                M.toast({html: '<i class="material-icons orange-text">warning</i> &nbsp; برای نشانه گذاری، لطفا ثبت نام کن یا وارد سایت شو!'});
+              }
+              $('#comment-val').val('')
+            }
+          },
+          error: function(a, b, c, d){
+            M.toast({html: '<i class="material-icons red-text">error</i> &nbsp; اوه! یه مشکلی پیش اومده...'})
+          }
+        });
+      })
+
+    });
+  </script>
+{% endblock js %}

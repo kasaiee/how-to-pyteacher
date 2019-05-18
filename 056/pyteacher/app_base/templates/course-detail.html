@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% load social_tags %}
+
+{% block breadcrumb %}
+  <nav class="breadcrumb-nav">
+    <div class="nav-wrapper teal">
+      <div class="col valign-wrapper">
+        <a href="/" class="breadcrumb">خانه</a>
+        <a href="{{ course.get_absolute_url }}">{{ course.title }}</a>
+      </div>
+    </div>
+  </nav>
+{% endblock breadcrumb %}
+ 
+{% block content %}
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <div class="col m2 action-icons hide-on-small-only">
+          <i class="material-icons left bookmark {% if course|is_booked:request.user %}orange-text{% else %}black-text{% endif %}" data-id="{{ course.id }}" data-type="Course" style="margin-top: 40px">{% if course|is_booked:request.user %}bookmark{% else %}bookmark_border{% endif %}</i>
+          <i class="material-icons left share" style="margin-top: 40px">share</i>
+          <i class="material-icons left like {% if course|is_liked:request.user %}red-text{% else %}black-text{% endif %}" data-id="{{ course.id }}" data-type="Course" style="margin-top: 40px">{% if course|is_liked:request.user %}favorite{% else %}favorite_border{% endif %}</i>
+        </div>
+        <div class="col m10 s12">
+          <h2>{{ course.title }}</h2>
+        </div>
+
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs tabs-fixed-width">
+            <li class="tab col s3"><a class="teal-text" href="#course-detail">شرح دوره</a></li>
+            <li class="tab col s3"><a class="teal-text" href="#course-sessions">جلسات این دوره</a></li>
+            <li class="tab col s3"><a class="teal-text" href="#course-exercise">تمرین های دوره</a></li>
+          </ul>
+        </div>
+        <div id="course-detail" class="col s12">
+          <div class="card-panel">
+            <h3>توضیحات دوره</h3>
+            <p>{{ course.description }}</p>
+          </div>
+
+          <div class="card-panel">
+            <h3>سرفصل دوره</h3>
+            <ul>
+              <li class="course-list">نصب پایتون</li>
+              <li class="course-list">تنظیمات اولیه پایتون</li>
+              <li class="course-list">اعداد در پایتون</li>
+              <li class="course-list">رشته ها در پایتون</li>
+            </ul>
+          </div>
+
+          <div class="card-panel">
+            <h3>منابع</h3>
+            <ul>
+              <li class="course-list">سایت <a href="http://tutorialspoint.com">tutorialspoint.com</a></li>
+              <li class="course-list">سایت <a href="http://youtube.com">youtube.com</a></li>
+            </ul>
+          </div>
+
+          <div class="card-panel">
+            <h3>دیگه چه خبر از این دوره؟</h3>
+            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی</p>
+          </div>
+        </div>
+        <div id="course-sessions" class="col s12">
+          {% for session in course.coursesession_set.all %}
+              <div class="card-panel">
+                <div class="">
+                  <a href="{{ session.get_absolute_url }}">
+                    <i class="material-icons left">videocam</i> {{ session }}
+                  </a>
+                </div>
+              </div>            
+          {% endfor %}
+        </div>
+
+        {% with course as obj %}
+        {% include "components/comment.html" %}
+        {% endwith %}
+
+        <div id="course-exercise" class="col s12">
+          {% for session in course.coursesession_set.all %}
+            {% for ex in session.coursesessionexercise_set.all %}
+                <div class="card-panel">
+                  <div class="">
+                    <a href="{{ ex.get_absolute_url }}">
+                      <i class="material-icons left">code</i> {{ session }} - {{ ex }}
+                    </a>
+                  </div>
+                </div>            
+            {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
+
+      
+
+
+      <a href="{% url 'app-base:register-course' course_id=course.id %}" class="btn">در این دوره شرکت می‌کنم!</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <h2>دیگر دوره ها</h2>
+      <div class="row">
+        {% for obj in courses %}
+          <div class="col s12 m4">
+            {% include "card.html" %}
+          </div>
+        {% endfor %}
+
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+{% block js %}
+  {{ block.super }}
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.tabs').tabs();
+    });
+  </script>
+{% endblock js %}

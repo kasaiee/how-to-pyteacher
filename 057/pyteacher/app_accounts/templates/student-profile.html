@@ -1,0 +1,30 @@
+{% extends "student-dashboard.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}{{ block.super }}
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <h2>پروفایل من</h2>
+        <form method="post">
+          {% crispy form %}
+          {% csrf_token %}
+        </form>
+      </div>
+    </div>
+  </div>        
+{% endblock content %}
+
+
+
+{% block js %}{{ block.super }}
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('select').formSelect();
+      $('textarea').removeClass('textarea').addClass('materialize-textarea');
+    });
+  </script>
+{% endblock js %}
+

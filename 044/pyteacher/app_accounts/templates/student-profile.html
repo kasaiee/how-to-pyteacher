@@ -1,0 +1,96 @@
+{% extends "student-dashboard.html" %}
+    
+{% block content %}{{ block.super }}
+
+  <div class="container">
+    <div class="section">
+      <div class="row">
+        <form method="post">
+          {{ form.as_p }}
+          {% csrf_token %}
+          <input type="submit" name="submit" class="btn" value="ثبت">
+        </form>
+
+        <h2>پروفایل من</h2>
+        <form method="post">
+          {% csrf_token %}
+          <div class="row">
+            <div class="input-field col m6 s12">
+              <input id="last_name" name="last_name" type="text" class="validate">
+              <label for="last_name">نام خانوادگی</label>
+            </div>
+            <div class="input-field col m6 s12">
+              <input id="first_name" name="first_name" type="text" class="validate">
+              <label for="first_name">نام</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col m6 s12">
+              <input id="phone" type="text" class="validate">
+              <label for="phone">شماره همراه</label>
+            </div>
+            <div class="input-field col m6 s12">
+              <input id="username" name="username" type="text" class="validate">
+              <label for="username">نام کاربری</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12">
+              <textarea id="bio" name="bio" class="materialize-textarea"></textarea>
+              <label for="bio">درباره من</label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s12 m6 rtl-select">
+              <select name="year">
+                <option value="" disabled selected>سال تولد خود را انتخاب کنید.</option>
+                <option value="1">1330</option>
+                <option value="1">1330</option>
+                <option value="1">1330</option>
+                <option value="1">1330</option>
+                <option value="1">1330</option>
+                <option value="1">1330</option>
+              </select>
+              <label>سال تولد</label>
+            </div>
+
+            <div class="input-field col s12 m6 rtl-select">
+              <select name="month">
+                <option value="" disabled selected>ماه تولد خود را انتخاب کنید.</option>
+                <option value="1">فروردین</option>
+                <option value="1">اردیبهشت</option>
+                <option value="1">خرداد</option>
+                <option value="1">تیر</option>
+                <option value="1">مرداد</option>
+                <option value="1">شهریور</option>
+                <option value="1">مهر</option>
+                <option value="1">آبان</option>
+                <option value="1">آذر</option>
+                <option value="1">دی</option>
+                <option value="1">بهمن</option>
+                <option value="1">اسفند</option>
+              </select>
+              <label>ماه تولد</label>
+            </div>
+          </div>
+
+          <input type="submit" name="submit" class="btn" value="ثبت">
+        </form>
+      </div>
+    </div>
+  </div>        
+{% endblock content %}
+
+
+
+{% block js %}{{ block.super }}
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('select').formSelect();
+    });
+  </script>
+{% endblock js %}
+

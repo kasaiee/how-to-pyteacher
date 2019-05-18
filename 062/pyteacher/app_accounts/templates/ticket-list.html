@@ -1,0 +1,32 @@
+{% extends "student-dashboard.html" %}
+
+
+{% block content %}
+{{ block.super }}
+<div class="container-fluid">
+  <div class="row">
+      <div class="col s12">
+          <div class="card-panel">
+              <table>
+                <thead>
+                  <tr>
+                      <th class="right-align">موضوع</th>
+                      <th class="right-align">تاریخ ارسال</th>
+                      <th class="right-align">وضعیت</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for ticket in tickets %}
+                      <tr>
+                        <td class="right-align"><a href="{{ ticket.get_absolute_url }}">{{ ticket.topic }}</a></td>
+                        <td class="right-align">{{ ticket.jd_create_datetime }}</td>
+                        <td class="right-align"><span class="badge {{ ticket.status_color }} white-text">{{ ticket.status }}</span></td>
+                      </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock content %}
