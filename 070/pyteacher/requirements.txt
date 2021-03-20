@@ -13,7 +13,7 @@ django-ckeditor==5.6.1
 django-crispy-forms==1.7.2
 django-js-asset==1.2.2
 django-materialize-css==0.0.1
-djangorestframework==3.9.2
+djangorestframework==3.11.2
 idna==2.8
 ipdb==0.11
 ipython==7.2.0
